@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluation Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .page {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        h1, h2 {
+            margin-top: 0;
+            color: #111827;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 18px;
+        }
+
+        .top-actions {
+            margin-top: 12px;
+        }
+
+        .button-link {
+            display: inline-block;
+            padding: 10px 14px;
+            background: #1f2937;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        .button-link:hover {
+            background: #111827;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 14px;
+        }
+
+        .summary-box {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 14px;
+        }
+
+        .summary-label {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .summary-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            background: white;
+        }
+
+        th, td {
+            border: 1px solid #e5e7eb;
+            padding: 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: #f3f4f6;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            background: #e5e7eb;
+            color: #111827;
+        }
+
+        .avg-cell {
+            font-weight: 600;
+        }
+
+        @media (max-width: 950px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="card">
+            <h1>Tutor Evaluation Dashboard</h1>
+            <div class="subtitle">
+                Student evaluation results for the Theory and Practical modules.
+            </div>
+
+        </div>
+
+        <div class="two-col">
+            <div class="card">
+                <h2>Theory Module Results</h2>
+                <div class="summary-grid">
+                    <div class="summary-box">
+                        <div class="summary-label">Q1. Complete explanations</div>
+                        <div class="summary-value">{{ theory_q1 }}</div>
+                    </div>
+                    <div class="summary-box">
+                        <div class="summary-label">Q2. Improves understanding</div>
+                        <div class="summary-value">{{ theory_q2 }}</div>
+                    </div>
+                    <div class="summary-box">
+                        <div class="summary-label">Q3. Quiz consistency</div>
+                        <div class="summary-value">{{ theory_q3 }}</div>
+                    </div>
+                    <div class="summary-box">
+                        <div class="summary-label">Q4. Response reliability</div>
+                        <div class="summary-value">{{ theory_q4 }}</div>
+                    </div>
+                    <div class="summary-box">
+                        <div class="summary-label">Q5. Useful for learning</div>
+                        <div class="summary-value">{{ theory_q5 }}</div>
+                    </div>
+                    <div class="summary-box">
+                        <div class="summary-label">Q6. Increases motivation</div>
+                        <div class="summary-value">{{ theory_q6 }}</div>
+                    </div>
+                    <div class="summary-box">
+                        <div class="summary-label">Q7. Overall satisfaction</div>
+                        <div class="summary-value">{{ theory_q7 }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Practical Module Results</h2>
+                <div class="summary-grid">
+                    <div class="summary-box">
+                        <div class="summary-label">Q1. Complete explanations</div>
+                        <div class="summary-value">{{ practical_q1 }}</div>
+                    </div>
+                    <div class="summary-box">
+                        <div class="summary-label">Q2. Improves understanding</div>
+                        <div class="summary-value">{{ practical_q2 }}</div>
+                    </div>
+                    <div class="summary-box">
+                        <div class="summary-label">Q3. Quiz consistency</div>
+                        <div class="summary-value">{{ practical_q3 }}</div>
+                    </div>
+                    <div class="summary-box">
+                        <div class="summary-label">Q4. Response reliability</div>
+                        <div class="summary-value">{{ practical_q4 }}</div>
+                    </div>
+                    <div class="summary-box">
+                        <div class="summary-label">Q5. Useful for learning</div>
+                        <div class="summary-value">{{ practical_q5 }}</div>
+                    </div>
+                    <div class="summary-box">
+                        <div class="summary-label">Q6. Increases motivation</div>
+                        <div class="summary-value">{{ practical_q6 }}</div>
+                    </div>
+                    <div class="summary-box">
+                        <div class="summary-label">Q7. Overall satisfaction</div>
+                        <div class="summary-value">{{ practical_q7 }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Submitted Evaluations</h2>
+            <div class="subtitle">
+                All saved student responses.
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Evaluator</th>
+                            <th>Module</th>
+                            <th>Q1</th>
+                            <th>Q2</th>
+                            <th>Q3</th>
+                            <th>Q4</th>
+                            <th>Q5</th>
+                            <th>Q6</th>
+                            <th>Q7</th>
+                            <th>Average</th>
+                            <th>Comments</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ev in evaluations %}
+                        <tr>
+                            <td>{{ ev.evaluator_name }}</td>
+                            <td>
+                                {% if ev.evaluated_module == "theory" %}
+                                    <span class="badge">Theory</span>
+                                {% elif ev.evaluated_module == "practical" %}
+                                    <span class="badge">Practical</span>
+                                {% else %}
+                                    <span class="badge">{{ ev.evaluated_module }}</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ ev.q1_complete_explanations }}</td>
+                            <td>{{ ev.q2_improves_understanding }}</td>
+                            <td>{{ ev.q3_quiz_consistency }}</td>
+                            <td>{{ ev.q4_response_reliability }}</td>
+                            <td>{{ ev.q5_useful_for_learning }}</td>
+                            <td>{{ ev.q6_increases_motivation }}</td>
+                            <td>{{ ev.q7_overall_satisfaction }}</td>
+                            <td class="avg-cell">{{ ev.average_score }}</td>
+                            <td>{{ ev.comments }}</td>
+                            <td>{{ ev.created_at }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="12">No evaluation responses saved yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

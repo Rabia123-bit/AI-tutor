@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BI Tutor - Practical Module</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .page {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+        }
+
+        h1 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            font-size: 30px;
+            color: #111827;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 28px;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .field {
+            flex: 1;
+            min-width: 220px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        select,
+        input,
+        button {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid #d1d5db;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+
+        button {
+            cursor: pointer;
+            background: #1f2937;
+            color: white;
+            border: none;
+        }
+
+        button:hover {
+            background: #111827;
+        }
+
+        .secondary-btn {
+            background: #e5e7eb;
+            color: #111827;
+            border: none;
+        }
+
+        .secondary-btn:hover {
+            background: #d1d5db;
+        }
+
+        .section-title {
+            margin-top: 28px;
+            margin-bottom: 12px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .box {
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 16px;
+            min-height: 80px;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+            line-height: 1.6;
+        }
+
+        .muted {
+            color: #6b7280;
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 14px;
+        }
+
+        .button-row button {
+            width: auto;
+            min-width: 180px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 768px) {
+            .button-row button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="card">
+            <h1>Business Intelligence Tutor - Practical Module</h1>
+            <div class="subtitle">
+                Select a BI topic, difficulty level, and matching practical analysis from the retail dataset.
+            </div>
+
+            <form id="practicalForm" method="post" onsubmit="return false;">
+                {% csrf_token %}
+
+                <div class="form-row">
+                    <div class="field">
+                        <label for="student_name">Student Name (optional)</label>
+                        <input type="text" name="student_name" id="student_name" placeholder="Enter your name">
+                    </div>
+
+                    <div class="field">
+                        <label for="topic">Select Topic</label>
+                        <select name="topic" id="topic"></select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label for="difficulty">Select Difficulty</label>
+                        <select name="difficulty" id="difficulty">
+                            <option value="Beginner">Beginner</option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Advanced">Advanced</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="action">Select Practical Analysis</label>
+                        <select name="action" id="action"></select>
+                    </div>
+                </div>
+
+                <div class="field" style="margin-bottom: 18px;">
+                    <label for="question">Optional Question</label>
+                    <input
+                        type="text"
+                        name="question"
+                        id="question"
+                        placeholder="Example: Explain this result in business terms"
+                    >
+                    <div class="muted">You can leave this empty.</div>
+                </div>
+
+                <button type="button" id="runAnalysisBtn">Run Analysis</button>
+            </form>
+
+            <div class="section-title">Computed Result</div>
+            <div id="resultBox" class="box">Select a topic and matching practical analysis, then click Run Analysis.</div>
+
+            <div class="section-title">AI Explanation</div>
+            <div id="explanationBox" class="box">The AI interpretation will appear here.</div>
+
+            <div id="practicalEvaluationRow" class="button-row hidden" style="margin-top:16px;">
+                <button type="button" id="evaluatePracticalBtn" class="secondary-btn">
+                    Evaluate Practical Module
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const TOPIC_ACTIONS = {
+            "Data Warehousing": {
+                "warehouse_dimension_summary": "Warehouse Dimension Summary",
+                "fact_table_summary": "Fact Table Summary"
+            },
+            "ETL": {
+                "data_quality_summary": "Data Quality Summary",
+                "etl_category_standardization_check": "Category Standardization Check"
+            },
+            "KPIs": {
+                "total_revenue": "Total Revenue",
+                "total_orders": "Total Orders",
+                "average_order_value": "Average Order Value",
+                "top_categories": "Top Categories by Revenue"
+            },
+            "SQL": {
+                "sql_sales_by_category": "SQL: Sales by Category",
+                "sql_top_stores": "SQL: Top Stores by Revenue",
+                "sql_daily_revenue": "SQL: Daily Revenue Trend"
+            },
+            "Dashboards": {
+                "dashboard_sales_overview": "Dashboard: Sales Overview",
+                "dashboard_store_comparison": "Dashboard: Store Comparison",
+                "dashboard_category_performance": "Dashboard: Category Performance"
+            },
+            "Predictive Analytics": {
+                "daily_revenue_trend": "Daily Revenue Trend",
+                "forecast_readiness_summary": "Forecast Readiness Summary"
+            }
+        };
+
+        const practicalForm = document.getElementById("practicalForm");
+        const topicSelect = document.getElementById("topic");
+        const actionSelect = document.getElementById("action");
+        const runAnalysisBtn = document.getElementById("runAnalysisBtn");
+        const resultBox = document.getElementById("resultBox");
+        const explanationBox = document.getElementById("explanationBox");
+        const evaluatePracticalBtn = document.getElementById("evaluatePracticalBtn");
+        const practicalEvaluationRow = document.getElementById("practicalEvaluationRow");
+
+        function populateTopics() {
+            topicSelect.innerHTML = "";
+
+            Object.keys(TOPIC_ACTIONS).forEach((topic, index) => {
+                const option = document.createElement("option");
+                option.value = topic;
+                option.textContent = topic;
+                if (index === 0) option.selected = true;
+                topicSelect.appendChild(option);
+            });
+        }
+
+        function populateActions(topic) {
+            actionSelect.innerHTML = "";
+            const actions = TOPIC_ACTIONS[topic];
+
+            if (!actions) return;
+
+            Object.entries(actions).forEach(([value, label], index) => {
+                const option = document.createElement("option");
+                option.value = value;
+                option.textContent = label;
+                if (index === 0) option.selected = true;
+                actionSelect.appendChild(option);
+            });
+        }
+
+        topicSelect.addEventListener("change", function () {
+            populateActions(this.value);
+        });
+
+        runAnalysisBtn.addEventListener("click", async function () {
+            resultBox.textContent = "Running analysis...";
+            explanationBox.textContent = "Generating explanation...";
+            practicalEvaluationRow.classList.add("hidden");
+
+            const formData = new FormData(practicalForm);
+
+            try {
+                const res = await fetch("/api/practical/", {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        "X-CSRFToken": formData.get("csrfmiddlewaretoken")
+                    }
+                });
+
+                const data = await res.json();
+
+                if (data.error) {
+                    resultBox.textContent = "No result available.";
+                    explanationBox.textContent = data.error;
+                    return;
+                }
+
+                resultBox.textContent = JSON.stringify(data.result, null, 2);
+                explanationBox.textContent = data.explanation || "No explanation returned.";
+                practicalEvaluationRow.classList.remove("hidden");
+
+            } catch (error) {
+                console.error("Practical analysis error:", error);
+                resultBox.textContent = "No result available.";
+                explanationBox.textContent = "Something went wrong while processing the request.";
+            }
+        });
+
+        evaluatePracticalBtn.addEventListener("click", function () {
+            const studentName = document.getElementById("student_name")?.value || "";
+            const url = `/evaluation/form/?module=practical&student_name=${encodeURIComponent(studentName)}`;
+            window.location.href = url;
+        });
+
+        populateTopics();
+        populateActions(topicSelect.value);
+    </script>
+</body>
+</html>

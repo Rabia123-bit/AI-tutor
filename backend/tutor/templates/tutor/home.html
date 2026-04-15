@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BI Tutor | Thesis Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #eaf1f7; /* Soft pastel blue */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #1f2937;
+        }
+
+        .card {
+            background-color: #ffffff;
+            padding: 60px 50px;
+            width: 100%;
+            max-width: 600px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 30px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            margin-bottom: 40px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .btn {
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 8px;
+            text-decoration: none;
+            border: 1px solid #d1d5db;
+            background-color: #ffffff;
+            color: #1f2937;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            background-color: #1f2937;
+            color: #ffffff;
+            border-color: #1f2937;
+        }
+
+        .footer {
+            margin-top: 40px;
+            font-size: 13px;
+            color: #9ca3af;
+        }
+
+        @media (min-width: 600px) {
+            .buttons {
+                flex-direction: row;
+            }
+
+            .btn {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>Business Intelligence Tutor System</h1>
+        <div class="subtitle">
+            An Interactive Learning Platform Developed for Academic Research
+        </div>
+
+        <div class="buttons">
+            <a href="{% url 'practical' %}" class="btn">
+                Practical BI for Business
+            </a>
+
+            <a href="{% url 'theory' %}" class="btn">
+                Theoretical Concepts
+            </a>
+        </div>
+
+        <div class="footer">
+            Master Thesis Project · 2026
+        </div>
+    </div>
+
+</body>
+</html>

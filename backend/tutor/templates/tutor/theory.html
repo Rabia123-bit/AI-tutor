@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BI Tutor - Theory Module</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .page {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+        }
+
+        h1 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            font-size: 30px;
+            color: #111827;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 28px;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .field {
+            flex: 1;
+            min-width: 220px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        select,
+        input,
+        button {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid #d1d5db;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+
+        button {
+            cursor: pointer;
+            background: #1f2937;
+            color: white;
+            border: none;
+            transition: 0.2s ease;
+        }
+
+        button:hover:not(:disabled) {
+            background: #111827;
+        }
+
+        button:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+            background: #9ca3af;
+        }
+
+        .secondary-btn {
+            background: #e5e7eb;
+            color: #111827;
+        }
+
+        .secondary-btn:hover:not(:disabled) {
+            background: #d1d5db;
+        }
+
+        .section-title {
+            margin-top: 28px;
+            margin-bottom: 12px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .output-box,
+        .result-box {
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 16px;
+            min-height: 80px;
+            line-height: 1.6;
+            overflow-wrap: break-word;
+        }
+
+        .output-box {
+            white-space: pre-wrap;
+            max-height: 420px;
+            overflow-y: auto;
+        }
+
+        #quizResult {
+            white-space: normal;
+        }
+
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 14px;
+        }
+
+        .button-row button {
+            width: auto;
+            min-width: 160px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .quiz-question {
+            background: #fafafa;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+
+        .quiz-question-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .quiz-option {
+            display: block;
+            margin-bottom: 4px;
+            line-height: 1.3;
+        }
+
+        .quiz-option input {
+            margin-right: 8px;
+            width: auto;
+        }
+
+        .status-text {
+            color: #6b7280;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .button-row button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="card">
+            <h1>Business Intelligence Tutor</h1>
+            <div class="subtitle">
+                Explore BI theory topics with structured explanations, listening support, and quizzes.
+            </div>
+
+            <form id="theoryForm">
+                {% csrf_token %}
+
+                <div class="form-row">
+                    <div class="field">
+                        <label for="student_name">Student Name (optional)</label>
+                        <input type="text" name="student_name" id="student_name" placeholder="Enter your name">
+                    </div>
+
+                    <div class="field">
+                        <label for="topic">Select Topic</label>
+                        <select name="topic" id="topic">
+                            <option value="Data Warehousing">Data Warehousing</option>
+                            <option value="ETL">ETL</option>
+                            <option value="KPIs">KPIs</option>
+                            <option value="SQL">SQL</option>
+                            <option value="Dashboards">Dashboards</option>
+                            <option value="Predictive Analytics">Predictive Analytics</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="difficulty">Select Difficulty</label>
+                        <select name="difficulty" id="difficulty">
+                            <option value="Beginner">Beginner</option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Advanced">Advanced</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" id="explainBtn">Explain</button>
+            </form>
+
+            <div class="section-title">Explanation</div>
+            <div id="output" class="output-box">Select a topic and click Explain.</div>
+
+            <div id="explanationActions" class="button-row hidden">
+                <button type="button" id="listenBtn" class="secondary-btn">Listen</button>
+                <button type="button" id="stopBtn" class="secondary-btn">Stop</button>
+                <button type="button" id="quizBtn">Generate Quiz</button>
+                <button type="button" id="evaluateTheoryBtn" class="secondary-btn">Evaluate Theory Module</button>
+            </div>
+
+            <div id="quizSection" class="hidden">
+                <div class="section-title">Quiz</div>
+                <div id="quizArea"></div>
+
+                <div class="button-row">
+                    <button type="button" id="submitQuizBtn" disabled>Submit Quiz</button>
+                </div>
+                <div id="quizStatus" class="status-text"></div>
+
+                <div class="section-title">Quiz Result</div>
+                <div id="quizResult" class="result-box">Your quiz result will appear here.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById("theoryForm");
+        const output = document.getElementById("output");
+
+        const explanationActions = document.getElementById("explanationActions");
+        const listenBtn = document.getElementById("listenBtn");
+        const stopBtn = document.getElementById("stopBtn");
+        const quizBtn = document.getElementById("quizBtn");
+        const evaluateTheoryBtn = document.getElementById("evaluateTheoryBtn");
+
+        const quizSection = document.getElementById("quizSection");
+        const quizArea = document.getElementById("quizArea");
+        const submitQuizBtn = document.getElementById("submitQuizBtn");
+        const quizResult = document.getElementById("quizResult");
+        const quizStatus = document.getElementById("quizStatus");
+
+        let lastTopic = null;
+        let lastDifficulty = null;
+        let lastTheoryText = "";
+        let quizId = null;
+        let speechUtterance = null;
+
+        function resetQuizUI() {
+            quizSection.classList.add("hidden");
+            quizArea.innerHTML = "";
+            quizResult.innerHTML = "Your quiz result will appear here.";
+            quizStatus.textContent = "";
+            submitQuizBtn.disabled = true;
+            quizId = null;
+        }
+
+        function hideExplanationActions() {
+            explanationActions.classList.add("hidden");
+        }
+
+        function showExplanationActions() {
+            explanationActions.classList.remove("hidden");
+        }
+
+        function updateSubmitState() {
+            const questionBlocks = document.querySelectorAll(".quiz-question");
+
+            if (questionBlocks.length === 0) {
+                submitQuizBtn.disabled = true;
+                quizStatus.textContent = "";
+                return;
+            }
+
+            let allAnswered = true;
+
+            questionBlocks.forEach((_, i) => {
+                const selected = document.querySelector(`input[name="q_${i}"]:checked`);
+                if (!selected) {
+                    allAnswered = false;
+                }
+            });
+
+            submitQuizBtn.disabled = !allAnswered;
+            quizStatus.textContent = allAnswered
+                ? "All questions answered. You can now submit the quiz."
+                : "Please answer all questions to enable submission.";
+        }
+
+        form.addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            output.textContent = "Thinking...";
+            hideExplanationActions();
+            resetQuizUI();
+
+            const formData = new FormData(form);
+            lastTopic = formData.get("topic");
+            lastDifficulty = formData.get("difficulty");
+
+            try {
+                const res = await fetch("/api/theory-tutor/", {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        "X-CSRFToken": formData.get("csrfmiddlewaretoken")
+                    }
+                });
+
+                const data = await res.json();
+
+                if (data.error) {
+                    output.textContent = data.error;
+                    lastTheoryText = "";
+                    return;
+                }
+
+                output.textContent = data.answer || "";
+                lastTheoryText = data.answer || "";
+
+                if (lastTheoryText.trim()) {
+                    showExplanationActions();
+                } else {
+                    output.textContent = "No explanation returned by the API.";
+                }
+
+            } catch (error) {
+                output.textContent = "Something went wrong while generating the explanation.";
+                lastTheoryText = "";
+                console.error(error);
+            }
+        });
+
+        quizBtn.addEventListener("click", async function () {
+            if (!lastTopic || !lastTheoryText) {
+                quizSection.classList.remove("hidden");
+                quizResult.innerHTML = "Please generate an explanation first.";
+                return;
+            }
+
+            quizSection.classList.remove("hidden");
+            quizArea.innerHTML = "";
+            quizResult.innerHTML = "Generating quiz...";
+            quizStatus.textContent = "";
+            submitQuizBtn.disabled = true;
+
+            const csrf = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+            const studentNameInput = document.getElementById("student_name");
+            const studentName = studentNameInput ? studentNameInput.value : "";
+
+            const fd = new FormData();
+            fd.append("topic", lastTopic);
+            fd.append("difficulty", lastDifficulty || "Beginner");
+            fd.append("context_text", lastTheoryText);
+            fd.append("student_name", studentName);
+            fd.append("csrfmiddlewaretoken", csrf);
+
+            try {
+                const res = await fetch("/api/theory-quiz/", {
+                    method: "POST",
+                    body: fd,
+                    headers: {
+                        "X-CSRFToken": csrf
+                    }
+                });
+
+                const data = await res.json();
+
+                if (data.error) {
+                    quizResult.innerHTML = data.error;
+                    return;
+                }
+
+                quizId = data.quiz_id;
+                renderQuiz(data.questions || []);
+                quizResult.innerHTML = "Quiz generated successfully.";
+                updateSubmitState();
+
+            } catch (error) {
+                quizResult.innerHTML = "Something went wrong while generating the quiz.";
+                console.error(error);
+            }
+        });
+
+        function renderQuiz(questions) {
+            quizArea.innerHTML = "";
+
+            if (!questions.length) {
+                quizArea.innerHTML = "<div class='quiz-question'>No quiz questions were returned.</div>";
+                return;
+            }
+
+            questions.forEach((q, i) => {
+                const wrapper = document.createElement("div");
+                wrapper.className = "quiz-question";
+
+                const title = document.createElement("div");
+                title.className = "quiz-question-title";
+                title.textContent = `${i + 1}. ${q.q}`;
+                wrapper.appendChild(title);
+
+                q.options.forEach((opt, j) => {
+                    const label = document.createElement("label");
+                    label.className = "quiz-option";
+
+                    const radio = document.createElement("input");
+                    radio.type = "radio";
+                    radio.name = `q_${i}`;
+                    radio.value = j;
+                    radio.addEventListener("change", updateSubmitState);
+
+                    label.appendChild(radio);
+                    label.appendChild(document.createTextNode(opt));
+                    wrapper.appendChild(label);
+                });
+
+                quizArea.appendChild(wrapper);
+            });
+        }
+
+        submitQuizBtn.addEventListener("click", async function () {
+            if (!quizId) {
+                quizResult.innerHTML = "Please generate a quiz first.";
+                return;
+            }
+
+            const answers = [];
+            const questionBlocks = document.querySelectorAll(".quiz-question");
+
+            questionBlocks.forEach((_, i) => {
+                const selected = document.querySelector(`input[name="q_${i}"]:checked`);
+                answers.push(selected ? parseInt(selected.value) : null);
+            });
+
+            const csrf = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+            const studentNameInput = document.getElementById("student_name");
+            const studentName = studentNameInput ? studentNameInput.value : "";
+
+            const fd = new FormData();
+            fd.append("quiz_id", quizId);
+            fd.append("answers", JSON.stringify(answers));
+            fd.append("topic", lastTopic || "");
+            fd.append("difficulty", lastDifficulty || "");
+            fd.append("student_name", studentName);
+            fd.append("csrfmiddlewaretoken", csrf);
+
+            quizResult.innerHTML = "Grading...";
+
+            try {
+                const res = await fetch("/api/grade-quiz/", {
+                    method: "POST",
+                    body: fd,
+                    headers: {
+                        "X-CSRFToken": csrf
+                    }
+                });
+
+                const data = await res.json();
+
+                if (data.error) {
+                    quizResult.innerHTML = data.error;
+                    return;
+                }
+
+                let html = `<div style="margin-bottom:25px;">
+                    <strong>Score:</strong> ${data.score} / ${data.total}
+                </div>`;
+
+                data.details.forEach((d) => {
+                    html += `<div style="
+                        margin-bottom:30px;
+                        padding-bottom:18px;
+                        border-bottom:1px solid #e5e7eb;
+                    ">`;
+
+                    html += `<div style="margin-bottom:10px;">
+                        <strong>Question ${d.question_number}:</strong> ${d.question_text}
+                    </div>`;
+
+                    html += `<div style="margin-bottom:8px;">
+                        <strong>Result:</strong> ${
+                            d.correct
+                                ? '<span style="color:green;font-weight:600;">Correct</span>'
+                                : '<span style="color:red;font-weight:600;">Wrong</span>'
+                        }
+                    </div>`;
+
+                    if (!d.correct) {
+                        html += `<div style="margin-bottom:8px;">
+                            <strong>Correct Answer:</strong> ${d.correct_answer_text}
+                        </div>`;
+
+                        html += `<div style="margin-bottom:12px;">
+                            <strong>Why your answer was incorrect:</strong> ${d.why_your_answer_wrong}
+                        </div>`;
+                    }
+
+                    html += `<div style="margin-bottom:12px;">
+                        <strong>Concept Explanation:</strong> ${d.why_correct}
+                    </div>`;
+
+                    html += `<div>
+                        <strong>Review Note:</strong> ${d.review_note}
+                    </div>`;
+
+                    html += `</div>`;
+                });
+
+                quizResult.innerHTML = html;
+
+            } catch (error) {
+                quizResult.innerHTML = "Something went wrong while grading the quiz.";
+                console.error(error);
+            }
+        });
+
+        listenBtn.addEventListener("click", function () {
+            if (!("speechSynthesis" in window)) {
+                alert("Text-to-speech is not supported in this browser.");
+                return;
+            }
+
+            const text = output.textContent.trim();
+            if (!text || text === "Select a topic and click Explain." || text === "Thinking...") {
+                return;
+            }
+
+            window.speechSynthesis.cancel();
+            speechUtterance = new SpeechSynthesisUtterance(text);
+            speechUtterance.rate = 1;
+            speechUtterance.pitch = 1;
+            window.speechSynthesis.speak(speechUtterance);
+        });
+
+        stopBtn.addEventListener("click", function () {
+            if ("speechSynthesis" in window) {
+                window.speechSynthesis.cancel();
+            }
+        });
+
+        evaluateTheoryBtn.addEventListener("click", function () {
+            const studentName = document.getElementById("student_name")?.value || "";
+            const url = `/evaluation/form/?module=theory&student_name=${encodeURIComponent(studentName)}`;
+            window.location.href = url;
+        });
+    </script>
+</body>
+</html>

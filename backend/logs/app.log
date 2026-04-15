@@ -1,0 +1,73 @@
+[2026-03-18 00:36:42,134] INFO tutor: Theory request received | topic=KPIs | difficulty=Beginner
+[2026-03-18 00:37:00,363] INFO tutor: Theory response generated | topic=KPIs | difficulty=Beginner | response_time_ms=18229
+[2026-03-18 00:37:00,364] ERROR tutor: Theory response failed | topic=KPIs | difficulty=Beginner | response_time_ms=18229 | error=TutorLog() got unexpected keyword arguments: 'student_name'
+[2026-03-18 00:38:06,382] INFO tutor: Theory request received | topic=KPIs | difficulty=Beginner
+[2026-03-18 00:38:37,040] INFO tutor: Theory response generated | topic=KPIs | difficulty=Beginner | response_time_ms=30657
+[2026-03-18 00:38:58,984] INFO tutor: Quiz generated | topic=KPIs | difficulty=Beginner | response_time_ms=1
+[2026-03-18 00:38:58,985] ERROR tutor: Quiz generation failed | topic=KPIs | difficulty=Beginner | error=TutorLog() got unexpected keyword arguments: 'student_name'
+[2026-03-18 00:40:27,434] INFO tutor: Theory request received | topic=KPIs | difficulty=Beginner
+[2026-03-18 00:40:46,507] INFO tutor: Theory response generated | topic=KPIs | difficulty=Beginner | response_time_ms=19073
+[2026-03-18 00:41:41,484] INFO tutor: Quiz generated | topic=KPIs | difficulty=Beginner | response_time_ms=1
+[2026-03-18 00:42:04,330] INFO tutor: Quiz graded | topic=KPIs | difficulty=Beginner | score=2/5
+[2026-03-18 00:53:33,798] INFO tutor: Practical request success | topic=Practical BI | response_time_ms=0
+[2026-03-18 00:53:33,800] ERROR tutor: Practical request failed | error=TutorLog() got unexpected keyword arguments: 'student_name'
+[2026-03-18 00:55:11,442] INFO tutor: Practical request success | topic=Practical BI | response_time_ms=0
+[2026-03-18 01:04:46,112] INFO tutor: Practical success | action=average_order_value | response_time_ms=21393
+[2026-03-18 11:21:47,775] INFO tutor: Practical success | action=total_revenue | response_time_ms=15649
+[2026-03-18 11:26:24,711] INFO tutor: Practical success | action=total_revenue | response_time_ms=17104
+[2026-03-18 13:31:58,391] INFO tutor: Practical success | topic=Dashboards | difficulty=Beginner | action=average_order_value | response_time_ms=19311
+[2026-03-18 13:57:05,457] INFO tutor: Practical success | topic=SQL | difficulty=Beginner | action=sql_daily_revenue | response_time_ms=22082
+[2026-03-18 14:27:50,199] INFO tutor: Theory request received | topic=Predictive Analytics | difficulty=Advanced
+[2026-03-18 14:28:10,535] INFO tutor: Theory response generated | topic=Predictive Analytics | difficulty=Advanced | response_time_ms=20336
+[2026-03-18 14:28:18,559] INFO tutor: Quiz generated | topic=Predictive Analytics | difficulty=Advanced | response_time_ms=1
+[2026-03-18 14:28:42,857] INFO tutor: Quiz graded | topic=Predictive Analytics | difficulty=Advanced | score=1/5
+[2026-03-18 16:35:39,860] INFO tutor: Theory request received | topic=SQL | difficulty=Intermediate
+[2026-03-18 16:36:29,124] INFO tutor: Theory response generated | topic=SQL | difficulty=Intermediate | response_time_ms=49264
+[2026-03-18 16:36:35,001] INFO tutor: Quiz generated | topic=SQL | difficulty=Intermediate | response_time_ms=1
+[2026-03-18 16:37:11,227] INFO tutor: Quiz graded | topic=SQL | difficulty=Intermediate | score=5/5
+[2026-03-18 20:16:54,226] INFO tutor: Theory request received | topic=KPIs | difficulty=Intermediate
+[2026-03-18 20:17:17,574] INFO tutor: Theory response generated | topic=KPIs | difficulty=Intermediate | response_time_ms=23347
+[2026-03-18 20:17:39,712] INFO tutor: Quiz generated | topic=KPIs | difficulty=Intermediate | response_time_ms=7
+[2026-03-18 20:18:07,453] INFO tutor: Quiz graded | topic=KPIs | difficulty=Intermediate | score=2/5
+[2026-03-18 20:26:30,867] INFO tutor: Theory request received | topic=Data Warehousing | difficulty=Advanced
+[2026-03-18 20:27:05,083] INFO tutor: Theory response generated | topic=Data Warehousing | difficulty=Advanced | response_time_ms=34215
+[2026-03-18 20:27:31,193] INFO tutor: Quiz generated | topic=Data Warehousing | difficulty=Advanced | response_time_ms=6
+[2026-03-18 20:27:43,024] INFO tutor: Quiz graded | topic=Data Warehousing | difficulty=Advanced | score=1/5
+[2026-03-18 20:37:36,276] INFO tutor: Theory request received | topic=Data Warehousing | difficulty=Beginner
+[2026-03-18 20:38:06,876] INFO tutor: Theory response generated | topic=Data Warehousing | difficulty=Beginner | response_time_ms=30600
+[2026-03-18 20:38:21,738] INFO tutor: Quiz generated | topic=Data Warehousing | difficulty=Beginner | response_time_ms=1
+[2026-03-18 20:38:31,750] INFO tutor: Quiz graded | topic=Data Warehousing | difficulty=Beginner | score=1/5
+[2026-03-18 21:06:27,604] INFO tutor: Theory request received | topic=Data Warehousing | difficulty=Beginner
+[2026-03-18 21:07:13,878] INFO tutor: Theory response generated | topic=Data Warehousing | difficulty=Beginner | response_time_ms=46273
+[2026-03-18 21:07:30,126] INFO tutor: Quiz generated | topic=Data Warehousing | difficulty=Beginner | response_time_ms=7
+[2026-03-18 21:07:42,554] INFO tutor: Quiz graded | topic=Data Warehousing | difficulty=Beginner | score=0/5
+[2026-03-18 23:34:06,590] INFO tutor: Theory request received | topic=Data Warehousing | difficulty=Beginner
+[2026-03-18 23:34:38,982] INFO tutor: Theory response generated | topic=Data Warehousing | difficulty=Beginner | response_time_ms=32392
+[2026-03-18 23:34:41,688] INFO tutor: Quiz generated | topic=Data Warehousing | difficulty=Beginner | response_time_ms=1
+[2026-03-18 23:34:55,418] INFO tutor: Quiz graded | topic=Data Warehousing | difficulty=Beginner | score=2/5
+[2026-03-30 12:51:57,216] INFO tutor: Practical success | topic=SQL | difficulty=Advanced | action=sql_daily_revenue | response_time_ms=19230
+[2026-03-30 12:52:47,584] INFO tutor: Theory request received | topic=SQL | difficulty=Advanced
+[2026-03-30 12:53:14,281] INFO tutor: Theory response generated | topic=SQL | difficulty=Advanced | response_time_ms=26696
+[2026-03-30 12:53:22,366] INFO tutor: Quiz generated | topic=SQL | difficulty=Advanced | response_time_ms=2
+[2026-03-30 12:54:02,967] INFO tutor: Quiz graded | topic=SQL | difficulty=Advanced | score=4/5
+[2026-03-30 14:04:31,444] INFO tutor: Practical success | topic=SQL | difficulty=Intermediate | action=sql_sales_by_category | response_time_ms=20115
+[2026-03-30 14:13:16,243] INFO tutor: Practical success | topic=Dashboards | difficulty=Beginner | action=dashboard_sales_overview | response_time_ms=25442
+[2026-03-30 14:15:39,526] INFO tutor: Theory request received | topic=Predictive Analytics | difficulty=Intermediate
+[2026-03-30 14:15:39,595] INFO tutor: Theory request received | topic=Predictive Analytics | difficulty=Intermediate
+[2026-03-30 14:15:58,325] INFO tutor: Theory response generated | topic=Predictive Analytics | difficulty=Intermediate | response_time_ms=18798
+[2026-03-30 14:16:00,512] INFO tutor: Theory response generated | topic=Predictive Analytics | difficulty=Intermediate | response_time_ms=20917
+[2026-03-30 14:17:25,813] INFO tutor: Quiz generated | topic=Predictive Analytics | difficulty=Intermediate | response_time_ms=2
+[2026-03-30 14:18:02,734] INFO tutor: Quiz graded | topic=Predictive Analytics | difficulty=Intermediate | score=2/5
+[2026-04-07 00:28:19,691] INFO tutor: Practical success | topic=SQL | difficulty=Beginner | action=sql_sales_by_category | response_time_ms=17414
+[2026-04-07 00:29:22,772] INFO tutor: Theory request received | topic=Data Warehousing | difficulty=Beginner
+[2026-04-07 00:29:42,103] INFO tutor: Theory response generated | topic=Data Warehousing | difficulty=Beginner | response_time_ms=19330
+[2026-04-07 00:29:48,312] INFO tutor: Quiz generated | topic=Data Warehousing | difficulty=Beginner | response_time_ms=4
+[2026-04-07 00:30:06,784] INFO tutor: Quiz graded | topic=Data Warehousing | difficulty=Beginner | score=2/5
+[2026-04-07 00:45:11,163] INFO tutor: Theory request received | topic=Data Warehousing | difficulty=Beginner
+[2026-04-07 00:45:37,303] INFO tutor: Theory response generated | topic=Data Warehousing | difficulty=Beginner | response_time_ms=26139
+[2026-04-07 00:46:05,845] INFO tutor: Quiz generated | topic=Data Warehousing | difficulty=Beginner | response_time_ms=11
+[2026-04-07 00:46:21,917] INFO tutor: Quiz graded | topic=Data Warehousing | difficulty=Beginner | score=2/5
+[2026-04-12 21:13:18,467] INFO tutor: Theory request received | topic=ETL | difficulty=Beginner
+[2026-04-12 21:13:53,510] INFO tutor: Theory response generated | topic=ETL | difficulty=Beginner | response_time_ms=35042
+[2026-04-12 21:14:18,241] INFO tutor: Quiz generated | topic=ETL | difficulty=Beginner | response_time_ms=1
+[2026-04-14 14:11:55,655] INFO tutor: Practical success | topic=ETL | difficulty=Beginner | action=etl_category_standardization_check | response_time_ms=21375

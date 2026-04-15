@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BI Tutor Logs Dashboard</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .page {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 30px;
+            color: #111827;
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 22px;
+            color: #111827;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 24px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        .summary-box {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .summary-label {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .summary-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .section-title {
+            margin-top: 10px;
+            margin-bottom: 16px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            background: white;
+        }
+
+        th, td {
+            border: 1px solid #e5e7eb;
+            padding: 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: #f3f4f6;
+        }
+
+        .success {
+            color: #047857;
+            font-weight: 600;
+        }
+
+        .error {
+            color: #b91c1c;
+            font-weight: 600;
+        }
+
+        .small {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="card">
+            <h1>BI Tutor Logs Dashboard</h1>
+            <div class="subtitle">
+                Centralized monitoring page for theory, practical, and quiz activity.
+            </div>
+
+            <div class="summary-grid">
+                <div class="summary-box">
+                    <div class="summary-label">Theory Sessions</div>
+                    <div class="summary-value">{{ total_theory }}</div>
+                </div>
+                <div class="summary-box">
+                    <div class="summary-label">Practical Sessions</div>
+                    <div class="summary-value">{{ total_practical }}</div>
+                </div>
+                <div class="summary-box">
+                    <div class="summary-label">Quizzes Generated</div>
+                    <div class="summary-value">{{ total_quiz_generated }}</div>
+                </div>
+                <div class="summary-box">
+                    <div class="summary-label">Quiz Results Saved</div>
+                    <div class="summary-value">{{ total_quiz_results }}</div>
+                </div>
+                <div class="summary-box">
+                    <div class="summary-label">Avg Theory Response Time (ms)</div>
+                    <div class="summary-value">{{ avg_theory_response }}</div>
+                </div>
+                <div class="summary-box">
+                    <div class="summary-label">Avg Practical Response Time (ms)</div>
+                    <div class="summary-value">{{ avg_practical_response }}</div>
+                </div>
+                <div class="summary-box">
+                    <div class="summary-label">Avg Quiz Score</div>
+                    <div class="summary-value">{{ avg_quiz_score }}</div>
+                </div>
+                <div class="summary-box">
+                    <div class="summary-label">Errors</div>
+                    <div class="summary-value">{{ error_count }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="section-title">Topic Usage Summary</div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Topic</th>
+                            <th>Total Uses</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in topic_summary %}
+                        <tr>
+                            <td>{{ row.topic }}</td>
+                            <td>{{ row.total }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="2">No topic data available.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="two-col">
+            <div class="card">
+                <h2>Theory Module Logs</h2>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Topic</th>
+                                <th>Difficulty</th>
+                                <th>Status</th>
+                                <th>Response Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for log in theory_logs %}
+                            <tr>
+                                <td>{{ log.created_at }}</td>
+                                <td>{{ log.topic }}</td>
+                                <td>{{ log.difficulty }}</td>
+                                <td class="{% if log.status == 'success' %}success{% else %}error{% endif %}">
+                                    {{ log.status }}
+                                </td>
+                                <td>{{ log.response_time_ms }} ms</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="5">No theory logs available.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Practical Module Logs</h2>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Topic</th>
+                                <th>Difficulty</th>
+                                <th>Status</th>
+                                <th>Response Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for log in practical_logs %}
+                            <tr>
+                                <td>{{ log.created_at }}</td>
+                                <td>{{ log.topic }}</td>
+                                <td>{{ log.difficulty }}</td>
+                                <td class="{% if log.status == 'success' %}success{% else %}error{% endif %}">
+                                    {{ log.status }}
+                                </td>
+                                <td>{{ log.response_time_ms }} ms</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="5">No practical logs available.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="two-col">
+            <div class="card">
+                <h2>Quiz Generation Logs</h2>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Topic</th>
+                                <th>Difficulty</th>
+                                <th>Status</th>
+                                <th>Total Questions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for log in quiz_generation_logs %}
+                            <tr>
+                                <td>{{ log.created_at }}</td>
+                                <td>{{ log.topic }}</td>
+                                <td>{{ log.difficulty }}</td>
+                                <td class="{% if log.status == 'success' %}success{% else %}error{% endif %}">
+                                    {{ log.status }}
+                                </td>
+                                <td>{{ log.total_questions }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="5">No quiz generation logs available.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Quiz Result Logs</h2>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Topic</th>
+                                <th>Difficulty</th>
+                                <th>Score</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for log in quiz_result_logs %}
+                            <tr>
+                                <td>{{ log.created_at }}</td>
+                                <td>{{ log.topic }}</td>
+                                <td>{{ log.difficulty }}</td>
+                                <td>{{ log.quiz_score }}/{{ log.total_questions }}</td>
+                                <td class="{% if log.status == 'success' %}success{% else %}error{% endif %}">
+                                    {{ log.status }}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="5">No quiz result logs available.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Error Details</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Module</th>
+                            <th>Topic</th>
+                            <th>Difficulty</th>
+                            <th>Error Message</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in theory_logs %}
+                            {% if log.status == "error" %}
+                            <tr>
+                                <td>{{ log.module }}</td>
+                                <td>{{ log.topic }}</td>
+                                <td>{{ log.difficulty }}</td>
+                                <td>{{ log.error_message }}</td>
+                                <td>{{ log.created_at }}</td>
+                            </tr>
+                            {% endif %}
+                        {% endfor %}
+                        {% for log in practical_logs %}
+                            {% if log.status == "error" %}
+                            <tr>
+                                <td>{{ log.module }}</td>
+                                <td>{{ log.topic }}</td>
+                                <td>{{ log.difficulty }}</td>
+                                <td>{{ log.error_message }}</td>
+                                <td>{{ log.created_at }}</td>
+                            </tr>
+                            {% endif %}
+                        {% endfor %}
+                        {% for log in quiz_generation_logs %}
+                            {% if log.status == "error" %}
+                            <tr>
+                                <td>{{ log.module }}</td>
+                                <td>{{ log.topic }}</td>
+                                <td>{{ log.difficulty }}</td>
+                                <td>{{ log.error_message }}</td>
+                                <td>{{ log.created_at }}</td>
+                            </tr>
+                            {% endif %}
+                        {% endfor %}
+                        {% for log in quiz_result_logs %}
+                            {% if log.status == "error" %}
+                            <tr>
+                                <td>{{ log.module }}</td>
+                                <td>{{ log.topic }}</td>
+                                <td>{{ log.difficulty }}</td>
+                                <td>{{ log.error_message }}</td>
+                                <td>{{ log.created_at }}</td>
+                            </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
