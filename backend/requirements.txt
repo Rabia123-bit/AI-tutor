@@ -65,7 +65,6 @@ jupyterlab_server==2.27.3
 jupyterlab_widgets==3.0.13
 kfactory==0.22.0
 kiwisolver==1.4.8
-klayout==0.29.10
 lazy_loader==0.4
 loguru==0.7.3
 mapbox_earcut==1.0.3
