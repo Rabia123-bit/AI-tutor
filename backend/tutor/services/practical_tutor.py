@@ -41,11 +41,11 @@ def get_max_tokens(difficulty: str) -> int:
     difficulty = (difficulty or "").strip().lower()
 
     if difficulty == "beginner":
-        return 1000
-    elif difficulty == "intermediate":
         return 1500
+    elif difficulty == "intermediate":
+        return 2000
     elif difficulty == "advanced":
-        return 1900
+        return 2500
     return 1000
 
 
