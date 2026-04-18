@@ -259,7 +259,6 @@
                 <button type="button" id="listenBtn" class="secondary-btn">Listen</button>
                 <button type="button" id="stopBtn" class="secondary-btn">Stop</button>
                 <button type="button" id="quizBtn">Generate Quiz</button>
-                <button type="button" id="evaluateTheoryBtn" class="secondary-btn">Evaluate Theory Module</button>
             </div>
 
             <div id="quizSection" class="hidden">
@@ -273,6 +272,10 @@
 
                 <div class="section-title">Quiz Result</div>
                 <div id="quizResult" class="result-box">Your quiz result will appear here.</div>
+
+                <div id="theoryEvaluationRow" class="button-row hidden">
+                    <button type="button" id="evaluateTheoryBtn" class="secondary-btn">Evaluate Theory Module</button>
+                </div>
             </div>
         </div>
     </div>
@@ -285,7 +288,6 @@
         const listenBtn = document.getElementById("listenBtn");
         const stopBtn = document.getElementById("stopBtn");
         const quizBtn = document.getElementById("quizBtn");
-        const evaluateTheoryBtn = document.getElementById("evaluateTheoryBtn");
 
         const quizSection = document.getElementById("quizSection");
         const quizArea = document.getElementById("quizArea");
@@ -296,6 +298,8 @@
         const loadingArea = document.getElementById("loadingArea");
         const loadingText = document.getElementById("loadingText");
         const explainBtn = document.getElementById("explainBtn");
+        const evaluateTheoryBtn = document.getElementById("evaluateTheoryBtn");
+        const theoryEvaluationRow = document.getElementById("theoryEvaluationRow");
 
         let lastTopic = null;
         let lastDifficulty = null;
@@ -324,6 +328,7 @@
             quizResult.innerHTML = "Your quiz result will appear here.";
             quizStatus.textContent = "";
             submitQuizBtn.disabled = true;
+            theoryEvaluationRow.classList.add("hidden");
             quizId = null;
         }
 
@@ -419,6 +424,7 @@
             quizResult.innerHTML = "Generating quiz...";
             quizStatus.textContent = "";
             submitQuizBtn.disabled = true;
+            theoryEvaluationRow.classList.add("hidden");
 
             const csrf = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
             const studentNameInput = document.getElementById("student_name");
@@ -588,6 +594,7 @@
                 });
 
                 quizResult.innerHTML = html;
+                theoryEvaluationRow.classList.remove("hidden");
 
             } catch (error) {
                 hideLoading();
