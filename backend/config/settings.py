@@ -192,3 +192,4 @@ LOGGING = {
         },
     },
 }
+CREATE_SUPERUSER = os.environ.get("CREATE_SUPERUSER", "False") == "True"
