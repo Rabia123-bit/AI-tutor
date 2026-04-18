@@ -259,6 +259,11 @@
             <div class="section-title">AI Explanation</div>
             <div id="explanationBox" class="box explanation-box">The AI interpretation will appear here.</div>
 
+            <div id="explanationAudioActions" class="button-row hidden">
+                <button type="button" id="listenPracticalBtn" class="secondary-btn">Listen</button>
+                <button type="button" id="stopPracticalBtn" class="secondary-btn">Stop</button>
+            </div>
+
             <div id="practicalEvaluationRow" class="button-row hidden" style="margin-top:16px;">
                 <button type="button" id="evaluatePracticalBtn" class="secondary-btn">
                     Evaluate Practical Module
@@ -311,6 +316,11 @@
         const loadingText = document.getElementById("loadingText");
         const toggleResultBtn = document.getElementById("toggleResultBtn");
         const resultActions = document.getElementById("resultActions");
+        const explanationAudioActions = document.getElementById("explanationAudioActions");
+        const listenPracticalBtn = document.getElementById("listenPracticalBtn");
+        const stopPracticalBtn = document.getElementById("stopPracticalBtn");
+
+        let practicalSpeechUtterance = null;
 
         function populateTopics() {
             topicSelect.innerHTML = "";
@@ -356,7 +366,6 @@
         }
 
         function updateResultToggle() {
-            // Show toggle only when content is actually long
             setTimeout(() => {
                 if (resultBox.scrollHeight > resultBox.clientHeight + 10) {
                     resultActions.classList.remove("hidden");
@@ -373,6 +382,7 @@
         runAnalysisBtn.addEventListener("click", async function () {
             showLoading("Generating result and explanation...");
             practicalEvaluationRow.classList.add("hidden");
+            explanationAudioActions.classList.add("hidden");
             resultActions.classList.add("hidden");
             resetResultView();
 
@@ -408,6 +418,11 @@
                 explanationBox.textContent = data.explanation || "No explanation returned.";
 
                 updateResultToggle();
+
+                if ((data.explanation || "").trim()) {
+                    explanationAudioActions.classList.remove("hidden");
+                }
+
                 practicalEvaluationRow.classList.remove("hidden");
 
             } catch (error) {
@@ -423,6 +438,30 @@
             toggleResultBtn.textContent = resultBox.classList.contains("expanded")
                 ? "Show Less"
                 : "Show More";
+        });
+
+        listenPracticalBtn.addEventListener("click", function () {
+            if (!("speechSynthesis" in window)) {
+                alert("Text-to-speech is not supported in this browser.");
+                return;
+            }
+
+            const text = explanationBox.textContent.trim();
+            if (!text || text === "The AI interpretation will appear here." || text === "Generating explanation...") {
+                return;
+            }
+
+            window.speechSynthesis.cancel();
+            practicalSpeechUtterance = new SpeechSynthesisUtterance(text);
+            practicalSpeechUtterance.rate = 1;
+            practicalSpeechUtterance.pitch = 1;
+            window.speechSynthesis.speak(practicalSpeechUtterance);
+        });
+
+        stopPracticalBtn.addEventListener("click", function () {
+            if ("speechSynthesis" in window) {
+                window.speechSynthesis.cancel();
+            }
         });
 
         evaluatePracticalBtn.addEventListener("click", function () {
