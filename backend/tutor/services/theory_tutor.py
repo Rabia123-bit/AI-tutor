@@ -41,9 +41,9 @@ If space is limited, shorten earlier parts but still finish all sections.
 
 # Increase caps: ETL Intermediate often needs more room
 CAP_BY_DIFFICULTY = {
-    "Beginner": 900,
-    "Intermediate": 1800,
-    "Advanced": 2400,
+    "Beginner": 2000,
+    "Intermediate": 2500,
+    "Advanced": 3000,
 }
 
 # Continuation cap per extra call (keeps costs predictable)
