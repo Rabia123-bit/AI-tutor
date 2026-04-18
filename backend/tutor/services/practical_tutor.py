@@ -18,6 +18,9 @@ Write the response using exactly these sections and finish all sections complete
 5. Next Analytical Steps
 
 Rules:
+- Keep it clear, structured, and COMPLETE.
+- Be concise: prefer bullet points over long paragraphs or add tables where appropriate.
+- If space is limited, shorten earlier parts but still finish all sections.
 - Keep the answer complete but concise.
 - Do not stop midway.
 - Do not ask follow-up questions.
