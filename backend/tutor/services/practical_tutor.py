@@ -45,9 +45,9 @@ Important rules:
   - "Provide the dataset"
   - "I can also"
 - End cleanly after the final analytical step.
--Keep it clear, structured, and COMPLETE.
--Be concise: prefer bullet points over long paragraphs or add tables where appropriate.
--If space is limited, shorten earlier parts but still finish all sections.
+- Keep it clear, structured, and COMPLETE.
+- Be concise: prefer bullet points over long paragraphs or add tables where appropriate.
+- If space is limited, shorten earlier parts but still finish all sections.
 """
 
 
