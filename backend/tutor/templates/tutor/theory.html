@@ -110,13 +110,17 @@
             min-height: 120px;
             line-height: 1.6;
             overflow-wrap: break-word;
-            max-height:500px;
-            overflow-y: auto;
         }
 
         .output-box {
             white-space: pre-wrap;
             max-height: 420px;
+            overflow-y: auto;
+        }
+
+        .result-box {
+            white-space: normal;
+            max-height: 500px;
             overflow-y: auto;
         }
 
@@ -170,6 +174,30 @@
             margin-top: 8px;
         }
 
+        .loading-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 0 6px 0;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .loading-gif {
+            width: 28px;
+            height: 28px;
+            border: 4px solid #d1d5db;
+            border-top: 4px solid #1f2937;
+            border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         @media (max-width: 768px) {
             .button-row button {
                 width: 100%;
@@ -219,6 +247,11 @@
                 <button type="submit" id="explainBtn">Explain</button>
             </form>
 
+            <div id="loadingArea" class="loading-wrap hidden">
+                <div class="loading-gif"></div>
+                <div id="loadingText">Generating response...</div>
+            </div>
+
             <div class="section-title">Explanation</div>
             <div id="output" class="output-box">Select a topic and click Explain.</div>
 
@@ -260,11 +293,30 @@
         const quizResult = document.getElementById("quizResult");
         const quizStatus = document.getElementById("quizStatus");
 
+        const loadingArea = document.getElementById("loadingArea");
+        const loadingText = document.getElementById("loadingText");
+        const explainBtn = document.getElementById("explainBtn");
+
         let lastTopic = null;
         let lastDifficulty = null;
         let lastTheoryText = "";
         let quizId = null;
         let speechUtterance = null;
+
+        function showLoading(message) {
+            loadingText.textContent = message || "Generating response...";
+            loadingArea.classList.remove("hidden");
+            explainBtn.disabled = true;
+            quizBtn.disabled = true;
+            submitQuizBtn.disabled = true;
+        }
+
+        function hideLoading() {
+            loadingArea.classList.add("hidden");
+            explainBtn.disabled = false;
+            quizBtn.disabled = false;
+            updateSubmitState();
+        }
 
         function resetQuizUI() {
             quizSection.classList.add("hidden");
@@ -310,6 +362,7 @@
         form.addEventListener("submit", async function (e) {
             e.preventDefault();
 
+            showLoading("Generating explanation...");
             output.textContent = "Thinking...";
             hideExplanationActions();
             resetQuizUI();
@@ -328,6 +381,7 @@
                 });
 
                 const data = await res.json();
+                hideLoading();
 
                 if (data.error) {
                     output.textContent = data.error;
@@ -345,6 +399,7 @@
                 }
 
             } catch (error) {
+                hideLoading();
                 output.textContent = "Something went wrong while generating the explanation.";
                 lastTheoryText = "";
                 console.error(error);
@@ -358,6 +413,7 @@
                 return;
             }
 
+            showLoading("Generating quiz...");
             quizSection.classList.remove("hidden");
             quizArea.innerHTML = "";
             quizResult.innerHTML = "Generating quiz...";
@@ -385,6 +441,7 @@
                 });
 
                 const data = await res.json();
+                hideLoading();
 
                 if (data.error) {
                     quizResult.innerHTML = data.error;
@@ -397,6 +454,7 @@
                 updateSubmitState();
 
             } catch (error) {
+                hideLoading();
                 quizResult.innerHTML = "Something went wrong while generating the quiz.";
                 console.error(error);
             }
@@ -444,6 +502,8 @@
                 return;
             }
 
+            showLoading("Grading quiz...");
+
             const answers = [];
             const questionBlocks = document.querySelectorAll(".quiz-question");
 
@@ -476,6 +536,7 @@
                 });
 
                 const data = await res.json();
+                hideLoading();
 
                 if (data.error) {
                     quizResult.innerHTML = data.error;
@@ -529,6 +590,7 @@
                 quizResult.innerHTML = html;
 
             } catch (error) {
+                hideLoading();
                 quizResult.innerHTML = "Something went wrong while grading the quiz.";
                 console.error(error);
             }
