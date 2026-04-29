@@ -16,37 +16,48 @@ import csv
 from django.http import HttpResponse
 from .models import TutorEvaluation
 
+import csv
+from django.http import HttpResponse
+from .models import TutorEvaluation
+
 
 def export_evaluations_csv(request):
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="evaluation_results.csv"'
+    response = HttpResponse(content_type="text/csv")
+    response["Content-Disposition"] = 'attachment; filename="evaluation_results.csv"'
 
     writer = csv.writer(response)
 
-    # Header row (adjust based on your model fields)
     writer.writerow([
-        'Student Name',
-        'Module',
-        'Clarity',
-        'Usefulness',
-        'Engagement',
-        'Overall Experience',
-        'Comments',
-        'Created At'
+        "Student Name",
+        "Module Evaluated",
+        "Q1 Complete Explanations",
+        "Q2 Improves Understanding",
+        "Q3 Quiz Consistency",
+        "Q4 Response Reliability",
+        "Q5 Useful for Learning",
+        "Q6 Increases Motivation",
+        "Q7 Overall Satisfaction",
+        "Average Score",
+        "Comments",
+        "Created At",
     ])
 
-    evaluations = TutorEvaluation.objects.all().order_by('-created_at')
+    evaluations = TutorEvaluation.objects.all().order_by("-created_at")
 
-    for e in evaluations:
+    for ev in evaluations:
         writer.writerow([
-            e.student_name,
-            e.module,
-            getattr(e, 'clarity', ''),
-            getattr(e, 'usefulness', ''),
-            getattr(e, 'engagement', ''),
-            getattr(e, 'overall_experience', ''),
-            getattr(e, 'comments', ''),
-            e.created_at
+            ev.evaluator_name,
+            ev.evaluated_module,
+            ev.q1_complete_explanations,
+            ev.q2_improves_understanding,
+            ev.q3_quiz_consistency,
+            ev.q4_response_reliability,
+            ev.q5_useful_for_learning,
+            ev.q6_increases_motivation,
+            ev.q7_overall_satisfaction,
+            ev.average_score(),
+            ev.comments or "",
+            ev.created_at,
         ])
 
     return response
