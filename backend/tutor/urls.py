@@ -14,7 +14,7 @@ urlpatterns = [
     path("practical/", views.practical, name="practical"),
     path("api/practical/", practical_api, name="practical_api"),
     path("logs/", logs_dashboard, name="logs_dashboard"),
-   
+    path("export-evaluations/", export_evaluations_csv, name="export_evaluations_csv"),
     path("evaluation/", tutor_evaluation_dashboard, name="tutor_evaluation_dashboard"),
     path("evaluation/form/", tutor_evaluation_form, name="tutor_evaluation_form"),
     path("api/save-evaluation/", save_tutor_evaluation, name="save_tutor_evaluation"),
