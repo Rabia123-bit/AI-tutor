@@ -1,15 +1,55 @@
 import time
 import logging
-
+import csv
+from django.http import HttpResponse 
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 
 from .services.theory_tutor import generate_theory_response
 from .models import TutorLog
+from .models import TutorEvaluation
 
 logger = logging.getLogger("tutor")
 
+import csv
+from django.http import HttpResponse
+from .models import TutorEvaluation
+
+
+def export_evaluations_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="evaluation_results.csv"'
+
+    writer = csv.writer(response)
+
+    # Header row (adjust based on your model fields)
+    writer.writerow([
+        'Student Name',
+        'Module',
+        'Clarity',
+        'Usefulness',
+        'Engagement',
+        'Overall Experience',
+        'Comments',
+        'Created At'
+    ])
+
+    evaluations = TutorEvaluation.objects.all().order_by('-created_at')
+
+    for e in evaluations:
+        writer.writerow([
+            e.student_name,
+            e.module,
+            getattr(e, 'clarity', ''),
+            getattr(e, 'usefulness', ''),
+            getattr(e, 'engagement', ''),
+            getattr(e, 'overall_experience', ''),
+            getattr(e, 'comments', ''),
+            e.created_at
+        ])
+
+    return response
 
 def home(request):
     return render(request, "tutor/home.html")
