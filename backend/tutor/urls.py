@@ -4,6 +4,7 @@ from .views_quiz import theory_quiz_api, grade_quiz_api
 from .views_practical import practical_api
 from .views_logs import logs_dashboard
 from .views_evaluation import tutor_evaluation_form, tutor_evaluation_dashboard, save_tutor_evaluation
+from .views import export_evaluations_csv
 
 urlpatterns = [
     path("", views.home, name="home"),
